@@ -6,7 +6,7 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
-  imageRepository: 'hworld' # Name of your image
+  imageRepository: 'sridharavshastry/hworld' # Name of your image
   containerRegistry: 'docker-hub-connection' # Name of your Azure DevOps Docker Hub service connection
   registryLoginServer: 'docker.io' # Docker Hub registry
 
