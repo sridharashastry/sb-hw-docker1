@@ -6,13 +6,16 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  imageRepository: 'hworld' # Name of your image
+  containerRegistry: 'docker-hub-connection' # Name of your Azure DevOps Docker Hub service connection
+  registryLoginServer: 'docker.io' # Docker Hub registry
 
 stages:
 - stage: Build
-  displayName: Build image
+  displayName: Build and Push Image
   jobs:
   - job: Build
-    displayName: Build
+    displayName: Build and Push
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -41,6 +44,18 @@ stages:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/lab052/Dockerfile'
         buildContext: '$(Build.SourcesDirectory)/lab052'
-        arguments: '--no-cache' # Optional: disable caching to avoid cache issues
+        repository: '$(imageRepository)' # For Docker Hub, use just the image name
         tags: |
           $(tag)
+        arguments: '--no-cache'
+    - task: Docker@2
+      displayName: 'Push Docker image to Docker Hub'
+      inputs:
+        command: push
+        containerRegistry: 'dockerhub-pat-sri' # Name of your Docker Hub service connection
+        repository: '$(imageRepository)'
+        tags: |
+          $(tag)
+    - script: |
+        docker images
+      displayName: 'List Docker images on agent for debugging'
