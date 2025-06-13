@@ -6,7 +6,7 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
-  imageRepository: 'sridharavshastry/hworld' # Name of your image
+  imageRepository: 'hworld' # Name of your image
   containerRegistry: 'docker-hub-connection' # Name of your Azure DevOps Docker Hub service connection
   registryLoginServer: 'docker.io' # Docker Hub registry
 
@@ -52,7 +52,7 @@ stages:
       displayName: 'Push Docker image to Docker Hub'
       inputs:
         command: push
-        containerRegistry: 'dockerhub-pat-sri' # Name of your Docker Hub service connection
+        containerRegistry: '$(containerRegistry)' # Docker Hub service connection
         repository: '$(imageRepository)'
         tags: |
           $(tag)
