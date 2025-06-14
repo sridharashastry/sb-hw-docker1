@@ -7,8 +7,8 @@ metadata:
     app: hworld
 spec:
   replicas: 1
-  progressDeadlineSeconds: 600  # From your original
-  revisionHistoryLimit: 10      # From your original
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: hworld
@@ -27,26 +27,14 @@ spec:
         image: sridharavshastry/hworld:290
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 9000   # Required for Service targetPort
+        - containerPort: 9000
         resources:
-          limits:               # Added for production
+          limits:
             cpu: "500m"
             memory: "512Mi"
           requests:
             cpu: "250m"
             memory: "256Mi"
-        livenessProbe:         # Added for health checks
-          httpGet:
-            path: /health       # Replace with your app's health endpoint
-            port: 9000
-          initialDelaySeconds: 15
-          periodSeconds: 20
-        readinessProbe:        # Added for traffic routing
-          httpGet:
-            path: /ready       # Replace with your app's ready endpoint
-            port: 9000
-          initialDelaySeconds: 5
-          periodSeconds: 10
       terminationGracePeriodSeconds: 30
 ---
 apiVersion: v1
@@ -63,4 +51,4 @@ spec:
   ports:
   - port: 9000
     targetPort: 9000
-    nodePort: 30339   # Keep if you need this specific port
+    nodePort: 30339
